@@ -4,6 +4,8 @@ import './index.css'
 import App from './App.jsx'
 import { ClerkProvider } from '@clerk/clerk-react'
 import { DataProvider } from './context/DataContext'
+import { CartProvider } from './context/CartContext.jsx'
+
 
 
 // Import your Publishable Key
@@ -15,12 +17,16 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-   
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
     <DataProvider>
-    <App />
+      <CartProvider>
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+        <App />
+        </ClerkProvider>
+        </CartProvider>
+    
     </DataProvider>
-    </ClerkProvider>
    
-  </StrictMode>,
+     
+   
+   </StrictMode>,
 )
