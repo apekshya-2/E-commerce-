@@ -4,11 +4,13 @@ import axios from 'axios'
 import Loading from "../assets/Loading4.webm"
 import Breadcrums from '../Components/Breadcrums'
 import { IoCartOutline } from 'react-icons/io5'
+import { useCart } from '../context/CartContext'
 
 const SingleProduct = () => {
     const params = useParams()
     const [SingleProduct,setSingleProduct] = useState("")
-    console.log(params);
+    const {addToCart} = useCart()
+    
 
     const getSingleProduct = async () =>{
         try {
@@ -55,7 +57,7 @@ const SingleProduct = () => {
                 </div>
 
                 <div className='flex gap-4 mt-4'>
-                  <button className='px-6 flex gap-2 py-2 text-lg bg-red-500 text-white rounded-md'><IoCartOutline className='w-6 h-6'/> Add to Cart</button> 
+                  <button onClick={() => addToCart(SingleProduct)} className='px-6 flex gap-2 py-2 text-lg bg-red-500 text-white rounded-md'><IoCartOutline className='w-6 h-6'/> Add to Cart</button> 
                   </div>
 
               </div>

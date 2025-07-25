@@ -11,6 +11,7 @@ import SingleProduct from './pages/SingleProduct'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Cart from './pages/Cart'
+import { CategoryProduct } from './pages/CategoryProduct'
 
 const App = () => {
   const [location, setLocation] = useState()
@@ -58,6 +59,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<SingleProduct />} />
+        <Route path='/category/:category' element={<CategoryProduct/>}></Route>
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart location={location} getLocation={getLocation}/>} 

@@ -5,12 +5,16 @@ import { LuNotebookText } from 'react-icons/lu';
 import { MdDeliveryDining } from 'react-icons/md';
 import { GiShoppingBag } from 'react-icons/gi';
 import { useUser } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
+import emptyCart from "../assets/empty-cart.png";
+
 
 const Cart = ({ location, getLocation }) => {
-  const { cartItem, updateQuantity } = useCart();
+  const { cartItem, updateQuantity, deleteItem } = useCart();
   const { user } = useUser();
 
-  console.log(user);
+  const navigate = useNavigate()
+  // console.log(user);
 
   const totalPrice = cartItem.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -39,11 +43,11 @@ const Cart = ({ location, getLocation }) => {
                   </div>
                 </div>
                 <div className='bg-red-500 text-white flex gap-4 p-2 rounded-md font-bold text-xl'>
-                  <button onClick={()=>updateQuantity(item, item.id,"decrease")} className='cursor-pointer'>-</button>
+                  <button onClick={() => updateQuantity(cartItem, item.id, "decrease")} className='cursor-pointer'>-</button>
                   <span>{item.quantity}</span>
-                  <button onClick={()=>updateQuantity(item, item.id,"increase")} className='cursor-pointer'>+</button>
+                  <button onClick={() => updateQuantity(cartItem, item.id, "increase")} className='cursor-pointer'>+</button>
                 </div>
-                <span className='hover:bg-white/60 transition-all rounded-full p-3 hover:shadow-2xl'>
+                <span onClick={() => deleteItem(item.id)} className='hover:bg-white/60 transition-all rounded-full p-3 hover:shadow-2xl'>
                   <FaRegTrashAlt className='text-red-500 text-2xl cursor-pointer' />
                 </span>
               </div>
@@ -55,26 +59,26 @@ const Cart = ({ location, getLocation }) => {
               <h1 className='text-gray-800 font-bold text-xl'>Delivery Info</h1>
               <div className='flex flex-col space-y-1'>
                 <label>Full Name</label>
-                <input type="text" placeholder='Enter Your Name' className='p-2 rounded-md' value={user?.fullName || ''} readOnly />
+                <input type="text" placeholder='Enter Your Name' className='p-2 rounded-md' defaultValue={user.fullName} />
               </div>
               <div className='flex flex-col space-y-1'>
                 <label>Address</label>
-                <input type="text" placeholder='Enter Your Address' className='p-2 rounded-md' value={location?.county || ''} readOnly />
+                <input type="text" placeholder='Enter Your Address' className='p-2 rounded-md' defaultValue={location?.county} />
               </div>
               <div className='flex w-full gap-5'>
                 <div className='flex flex-col space-y-1 w-full'>
                   <label>State</label>
-                  <input type="text" placeholder='Enter Your State' className='p-2 rounded-md w-full' value={location?.state || ''} readOnly />
+                  <input type="text" placeholder='Enter Your State' className='p-2 rounded-md w-full' defaultValue={location?.state} />
                 </div>
                 <div className='flex flex-col space-y-1 w-full'>
                   <label>Post Code</label>
-                  <input type="text" placeholder='Enter Your Post Code' className='p-2 rounded-md w-full' value={location?.postcode || ''} readOnly />
+                  <input type="text" placeholder='Enter Your Post Code' className='p-2 rounded-md w-full' defaultValue={location?.postcode} />
                 </div>
               </div>
               <div className='flex w-full gap-5'>
                 <div className='flex flex-col space-y-1 w-full'>
                   <label>Country</label>
-                  <input type="text" placeholder='Enter Your Country' className='p-2 rounded-md w-full' value={location?.country || ''} readOnly />
+                  <input type="text" placeholder='Enter Your Country' className='p-2 rounded-md w-full' defaultValue={location?.country} />
                 </div>
                 <div className='flex flex-col space-y-1 w-full'>
                   <label>Phone Number</label>
@@ -129,7 +133,12 @@ const Cart = ({ location, getLocation }) => {
           </div>
         </div>
       ) : (
-        <div>Cart is empty</div>
+        <div className='flex flex-col gap-3 justify-center items-center h-[600px]'>
+          <h1 className='text-red-500/80 font-bold text-5xl text-muted'>OOPs !! Your cart is currently empty 🛒</h1>
+          <img src={emptyCart} alt="" className='w-[400px]'/>
+          <button onClick={()=> navigate('/products')} className='bg-red-500 text-white px-3 py-2 rounded-md cursor-pointer'>Continue Shopping</button>
+          </div>
+
       )}
     </div>
   );
